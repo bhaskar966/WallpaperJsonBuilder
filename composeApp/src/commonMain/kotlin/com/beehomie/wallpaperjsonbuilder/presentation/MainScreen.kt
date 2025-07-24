@@ -25,14 +25,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
 import com.beehomie.wallpaperjsonbuilder.presentation.FilePickers.FilePickerSection
-import com.beehomie.wallpaperjsonbuilder.presentation.Util_ui_components.ClearDataButton
-import com.beehomie.wallpaperjsonbuilder.presentation.Util_ui_components.ExportButton
 import com.beehomie.wallpaperjsonbuilder.presentation.forms.BannerInputForm
 import com.beehomie.wallpaperjsonbuilder.presentation.forms.WallpaperInputForm
 import com.beehomie.wallpaperjsonbuilder.presentation.lists.BannerListUi
 import com.beehomie.wallpaperjsonbuilder.presentation.lists.WallpaperListUi
 import com.beehomie.wallpaperjsonbuilder.presentation.menu.MenuItem
 import com.beehomie.wallpaperjsonbuilder.presentation.menu.MenuItemNames
+import com.beehomie.wallpaperjsonbuilder.presentation.menu.MoreOptions
 import com.beehomie.wallpaperjsonbuilder.viewModels.MainViewModel
 import io.github.vinceglb.filekit.absolutePath
 import io.github.vinceglb.filekit.dialogs.compose.rememberDirectoryPickerLauncher
@@ -179,19 +178,20 @@ fun MainScreen(
                     }
 
                 }
-                MenuItemNames.EXPORT_DATA -> {
-                    ExportButton(
-                        onExportButtonClick = {
-                            dirPicker.launch()
-                        }
-                    )
-                }
 
-                MenuItemNames.CLEAR_DATA -> {
-                    ClearDataButton(
-                        onClearButtonClick = {
+                MenuItemNames.MORE_OPTIONS -> {
+                    MoreOptions(
+                        clearButtonClick = {
                             scope.launch {
                                 viewModel.clearAllData()
+                            }
+                        },
+                        exportButtonClick = {
+                            dirPicker.launch()
+                        },
+                        onSynthesizeClick = {
+                            scope.launch {
+                                viewModel.sanitizeLinks()
                             }
                         }
                     )

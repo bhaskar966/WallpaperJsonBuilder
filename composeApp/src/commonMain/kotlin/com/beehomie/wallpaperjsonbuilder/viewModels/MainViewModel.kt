@@ -83,6 +83,12 @@ class MainViewModel(
         }
     }
 
+    suspend fun sanitizeLinks(){
+        withContext(Dispatchers.IO){
+            repository.sanitizeLinks()
+        }
+    }
+
     suspend fun loadData(file: File? = null, link: String? = null) {
         withContext(Dispatchers.IO) {
             clearAllData()

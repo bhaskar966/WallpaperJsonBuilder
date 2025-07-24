@@ -1,4 +1,4 @@
-package com.beehomie.wallpaperjsonbuilder.presentation.Util_ui_components
+package com.beehomie.wallpaperjsonbuilder.presentation.util_ui_components
 
 import androidx.compose.material3.Text
 import androidx.compose.material3.Button

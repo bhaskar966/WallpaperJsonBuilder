@@ -2,6 +2,7 @@
 androidx-lifecycle = "2.8.4"
 compose-multiplatform = "1.8.0"
 compose-bom = "2025.05.00"
+composeHotReload = "1.0.0-alpha10"
 filekit = "0.10.0-beta03"
 junit = "4.13.2"
 kotlin = "2.1.21"
@@ -61,10 +62,10 @@ filekit-dialogs-compose = { module = "io.github.vinceglb:filekit-dialogs-compose
 filekit-coil = { module = "io.github.vinceglb:filekit-coil", version.ref = "filekit" }
 
 [plugins]
+composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "composeHotReload" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-
 #Room and KSP
 room = { id = "androidx.room", version.ref = "room"}
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}

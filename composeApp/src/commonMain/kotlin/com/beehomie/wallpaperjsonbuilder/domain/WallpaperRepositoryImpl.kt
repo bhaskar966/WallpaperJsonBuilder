@@ -232,4 +232,19 @@ class WallpaperRepositoryImpl(
         }
     }
 
+    override suspend fun sanitizeLinks() {
+        withContext(Dispatchers.IO){
+            val wallpapers = dao.getAllWallpapers()
+            val cleanedWallpapers = wallpapers.map { wallpaperEntity ->
+                wallpaperEntity.copy(
+                    url = wallpaperEntity.url.substringBefore("?"),
+                    thumbnail = wallpaperEntity.thumbnail.substringBefore("?")
+                )
+            }
+            cleanedWallpapers.forEach { wallpaperEntity ->
+                dao.upsertWallpaper(wallpaperEntity)
+            }
+        }
+    }
+
 }

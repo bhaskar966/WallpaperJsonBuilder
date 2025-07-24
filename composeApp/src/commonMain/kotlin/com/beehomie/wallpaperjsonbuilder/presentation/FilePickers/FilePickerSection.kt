@@ -56,6 +56,9 @@ fun JsonLinkPicker(
             value = link,
             onValueChange = {
                 link = it
+            },
+            label = {
+                Text("Paste JSON link")
             }
         )
         Button(

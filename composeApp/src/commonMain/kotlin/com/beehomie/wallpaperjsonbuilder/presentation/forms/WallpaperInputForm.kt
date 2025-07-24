@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.TextField
@@ -15,11 +13,9 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -27,7 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.beehomie.wallpaperjsonbuilder.domain.models.Wallpaper
-import com.beehomie.wallpaperjsonbuilder.presentation.Util_ui_components.ChipInputField
+import com.beehomie.wallpaperjsonbuilder.presentation.util_ui_components.ChipInputField
 import com.beehomie.wallpaperjsonbuilder.viewModels.components.formStates.WallpaperFormState
 import com.beehomie.wallpaperjsonbuilder.viewModels.components.WallpaperUiEvents
 import com.beehomie.wallpaperjsonbuilder.viewModels.components.WallpaperUiState
@@ -35,7 +31,7 @@ import com.beehomie.wallpaperjsonbuilder.viewModels.components.WallpaperUiState
 
 fun resetForm(form: WallpaperFormState) {
     form.name = ""
-    form.author = ""
+    form.author = "Bhaskar"
     form.url = ""
     form.thumbnail = ""
     form.category = ""

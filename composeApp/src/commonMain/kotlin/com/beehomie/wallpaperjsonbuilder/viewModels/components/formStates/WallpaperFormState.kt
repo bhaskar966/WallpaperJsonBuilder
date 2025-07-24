@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 
 class WallpaperFormState {
     var name by mutableStateOf("")
-    var author by mutableStateOf("")
+    var author by mutableStateOf("Bhaskar")
     var url by mutableStateOf("")
     var thumbnail by mutableStateOf("")
     var isPremium by mutableStateOf(false)

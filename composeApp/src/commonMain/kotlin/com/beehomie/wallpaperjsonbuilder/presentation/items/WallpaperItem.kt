@@ -63,6 +63,9 @@ fun WallpaperItem(
             .height(IntrinsicSize.Max)
             .aspectRatio(9f/16f)
             .padding(10.dp)
+            .clickable {
+                onWallpaperItemClick()
+            }
             .clip(RoundedCornerShape(10.dp)),
         contentAlignment = Alignment.Center
     ) {
@@ -101,9 +104,6 @@ fun WallpaperItem(
                             .then(sizeResolver)
                             .fillMaxSize()
                             .clip(RoundedCornerShape(10.dp))
-                            .clickable {
-                                onWallpaperItemClick()
-                            }
                     )
                 }
             }

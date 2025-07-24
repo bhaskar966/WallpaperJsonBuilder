@@ -42,4 +42,6 @@ interface WallpaperRepository {
 
     suspend fun clearAllData()
 
+    suspend fun sanitizeLinks()
+
 }
