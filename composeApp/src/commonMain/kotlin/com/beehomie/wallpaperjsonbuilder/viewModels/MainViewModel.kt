@@ -86,6 +86,7 @@ class MainViewModel(
     suspend fun sanitizeLinks(){
         withContext(Dispatchers.IO){
             repository.sanitizeLinks()
+            getAllWallpapers()
         }
     }
 
