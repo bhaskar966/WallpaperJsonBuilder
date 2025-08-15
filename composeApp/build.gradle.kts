@@ -13,7 +13,7 @@ plugins {
 kotlin {
     jvm("desktop")
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 
 //    linuxX64(){
@@ -46,7 +46,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.compose.material3)
             implementation(libs.compose.desktop)
-//            implementation(project.dependencies.platform(libs.compose.bom))
+            val composeBom = project.dependencies.platform("androidx.compose:compose-bom:2025.05.00")
+            implementation(composeBom)
 
             //KOIN
             implementation(project.dependencies.platform(libs.koin.bom))
@@ -114,3 +115,9 @@ compose.desktop {
         }
     }
 }
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
