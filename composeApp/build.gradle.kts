@@ -12,6 +12,9 @@ plugins {
 
 kotlin {
     jvm("desktop")
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
 
 //    linuxX64(){
 //        binaries {
@@ -42,6 +45,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.compose.material3)
+            implementation(libs.compose.desktop)
 //            implementation(project.dependencies.platform(libs.compose.bom))
 
             //KOIN
