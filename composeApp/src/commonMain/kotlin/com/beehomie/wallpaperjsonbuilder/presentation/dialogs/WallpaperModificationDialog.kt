@@ -63,6 +63,7 @@ fun WallpaperModificationDialog(
         form.thumbnail = selectedWallpaper.thumbnail
         form.category = categoryTextField.joinToString(",")
         form.downloadable = selectedWallpaper.downloadable
+        form.isPremium = selectedWallpaper.isPremium
 
         categoryTextField.clear()
         categoryTextField.addAll(selectedWallpaper.category)
@@ -194,8 +195,6 @@ fun WallpaperModificationDialog(
                     Button(
                         onClick = {
                             isWallpaperWallpaperModDialogVisible.value = false
-                            tagTextField.clear()
-                            categoryTextField.clear()
                         }
                     ) {
                         Text("Cancel")
