@@ -21,7 +21,7 @@ abstract class WallpaperDB: RoomDatabase() {
     abstract fun wallpaperDao(): WallpaperDao
 }
 
-@Suppress("NO_ACTUAL_FOR_EXPECT")
+@Suppress("KotlinNoActualForExpect")
 expect object WallpaperDataBaseConstructor: RoomDatabaseConstructor<WallpaperDB>{
     override fun initialize(): WallpaperDB
 }

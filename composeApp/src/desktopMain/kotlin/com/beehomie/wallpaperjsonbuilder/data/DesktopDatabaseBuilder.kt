@@ -7,8 +7,6 @@ import java.io.File
 
 fun desktopDatabaseBuilder(): RoomDatabase.Builder<WallpaperDB> {
 
-//    val dbFile = File(System.getProperty("java.io.tempdir"), "room_db.db")
-
     val osName = System.getProperty("os.name").lowercase()
     val appName = "com.beehomie.wallpaperjsonbuilder"
 
