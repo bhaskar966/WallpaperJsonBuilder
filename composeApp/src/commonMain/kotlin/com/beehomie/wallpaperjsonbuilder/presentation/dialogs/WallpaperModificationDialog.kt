@@ -51,7 +51,6 @@ fun WallpaperModificationDialog(
 ) {
     val form = remember { WallpaperFormState() }
     val categories = wallpaperUiState.existingCategoryList
-    val tags = wallpaperUiState.existingTagList
     val categoryTextField = remember { mutableStateListOf<String>() }
     val tagTextField = remember { mutableStateListOf<String>() }
 
@@ -62,16 +61,15 @@ fun WallpaperModificationDialog(
         form.url = selectedWallpaper.url
         form.thumbnail = selectedWallpaper.thumbnail
         form.category = categoryTextField.joinToString(",")
-        form.downloadable = selectedWallpaper.downloadable
-        form.isPremium = selectedWallpaper.isPremium
+        form.downloadable = selectedWallpaper.downloadable ?: true
 
         categoryTextField.clear()
-        categoryTextField.addAll(selectedWallpaper.category)
-        form.category = selectedWallpaper.category.joinToString(",")
+        selectedWallpaper.category?.let {
+            categoryTextField.addAll(it)
+        }
 
-        tagTextField.clear()
-        tagTextField.addAll(selectedWallpaper.tags)
-        form.tags = selectedWallpaper.tags.joinToString(",")
+        form.category = selectedWallpaper.category?.joinToString(",")
+
     }
 
     AnimatedVisibility(visible = isWallpaperWallpaperModDialogVisible.value) {
@@ -106,7 +104,7 @@ fun WallpaperModificationDialog(
                 ) {
                     // Left: Image Preview
                     AsyncImage(
-                        model = form.thumbnail.ifEmpty { form.url },
+                        model = form.thumbnail?.ifEmpty { form.url },
                         contentDescription = "Wallpaper Preview",
                         modifier = Modifier
                             .weight(1f)
@@ -128,10 +126,10 @@ fun WallpaperModificationDialog(
                     ) {
                         Text("id: ${selectedWallpaper.id}")
                         TextField(value = form.name, onValueChange = { form.name = it }, label = { Text("Name") })
-                        TextField(value = form.author, onValueChange = { form.author = it }, label = { Text("Author") })
+                        TextField(value = form.author ?: "", onValueChange = { form.author = it }, label = { Text("Author") })
                         TextField(value = form.url, onValueChange = { form.url = it }, label = { Text("Image URL") })
                         TextField(
-                            value = form.thumbnail,
+                            value = form.thumbnail ?: "",
                             onValueChange = { form.thumbnail = it },
                             label = { Text("Thumbnail URL") })
                         ChipInputField(
@@ -139,12 +137,23 @@ fun WallpaperModificationDialog(
                             suggestions = categories,
                             selectedItems = categoryTextField
                         )
-                        ChipInputField(label = "Tags", suggestions = tags, selectedItems = tagTextField)
 
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Checkbox(checked = form.isPremium, onCheckedChange = { form.isPremium = it })
-                            Text("Premium")
-                        }
+                        TextField(
+                            value = if(form.size == null) "" else form.size.toString(),
+                            onValueChange = { form.size = it.toInt() },
+                            label = { Text("Size") }
+                        )
+                        TextField(
+                            value = form.dimensions ?: "",
+                            onValueChange = { form.dimensions = it },
+                            label = { Text("Dimensions") }
+                        )
+                        TextField(
+                            value = form.copyright ?: "",
+                            onValueChange = { form.copyright = it },
+                            label = { Text("Copyright") }
+                        )
+
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Checkbox(checked = form.downloadable, onCheckedChange = { form.downloadable = it })
                             Text("Downloadable")
@@ -173,17 +182,19 @@ fun WallpaperModificationDialog(
                         onClick = {
 
                             form.category = categoryTextField.joinToString(",")
-                            form.tags = tagTextField.joinToString(",")
+                            val categoryList = form.category?.split(',')?.map { it.trim() }?.filter { it.isNotBlank() }?.filter { it.isNotEmpty() }
 
                             val updatedWall = selectedWallpaper.copy(
+                                id = selectedWallpaper.id,
                                 name = form.name,
-                                author = form.author,
+                                author = if(form.author.isNullOrBlank()) null else form.author,
                                 url = form.url,
-                                thumbnail = form.thumbnail,
-                                isPremium = form.isPremium,
+                                thumbnail = if(form.thumbnail.isNullOrBlank()) null else form.thumbnail,
+                                copyright = if(form.copyright.isNullOrBlank()) null else form.copyright,
                                 downloadable = form.downloadable,
-                                category = categoryTextField.toList(),
-                                tags = tagTextField.toList()
+                                category = if(categoryList.isNullOrEmpty()) null else categoryList,
+                                size = if(form.size == 0) null else form.size,
+                                dimensions = if(form.dimensions.isNullOrBlank()) null else form.dimensions
                             )
                             onWallpaperUiEvents(WallpaperUiEvents.UpsertWallpaper(updatedWall))
                             isWallpaperWallpaperModDialogVisible.value = false

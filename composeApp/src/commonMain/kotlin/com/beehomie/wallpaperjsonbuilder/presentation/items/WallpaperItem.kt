@@ -45,7 +45,7 @@ fun WallpaperItem(
     val sizeResolver = rememberConstraintsSizeResolver()
     val wallpaperImage = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalPlatformContext.current)
-            .data(wallpaper.thumbnail)
+            .data(wallpaper.thumbnail ?: wallpaper.url)
             .size(Size.ORIGINAL)
             .memoryCacheKey(wallpaper.thumbnail +wallpaper.id)
             .diskCacheKey(wallpaper.thumbnail +wallpaper.id)

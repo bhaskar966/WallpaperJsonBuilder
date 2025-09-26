@@ -4,12 +4,13 @@ import androidx.room.PrimaryKey
 
 data class Wallpaper(
     val id: Int,
-    val category: List<String>,
+    val category: List<String>? = null,
     val name: String,
-    val author: String,
-    val url: String,
-    val thumbnail: String,
-    val isPremium: Boolean,
-    val tags: List<String>,
-    val downloadable: Boolean
+    val author: String? = null,
+    val url : String,
+    val thumbnail: String? = null,
+    val size: Int? = null,
+    val dimensions: String? = null,
+    val downloadable: Boolean? = null,
+    val copyright: String? = null
 )

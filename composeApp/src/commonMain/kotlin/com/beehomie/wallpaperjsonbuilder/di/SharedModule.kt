@@ -39,6 +39,7 @@ val apiModule = module {
             prettyPrint = true
             allowSpecialFloatingPointValues = true
             useAlternativeNames = true
+            explicitNulls = false
         }
     }
     single {

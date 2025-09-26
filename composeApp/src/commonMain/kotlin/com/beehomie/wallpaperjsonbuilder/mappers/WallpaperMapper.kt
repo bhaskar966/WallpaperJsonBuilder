@@ -4,46 +4,56 @@ import com.beehomie.wallpaperjsonbuilder.domain.models.Wallpaper
 import com.beehomie.wallpaperjsonbuilder.local.entities.WallpaperEntity
 import com.beehomie.wallpaperjsonbuilder.remote.dto.WallpaperDto
 
+private fun WallpaperDto.getConsolidatedCategories(): List<String> {
+    // Combine the list from `category` and the comma-separated string from `collections`
+    val fromList = categoryList ?: emptyList()
+    val fromString = collectionsString?.split(',')?.map { it.trim() }?.filter { it.isNotEmpty() } ?: emptyList()
+    return (fromList + fromString).distinct()
+}
+
 fun WallpaperDto.toWallpaper(): Wallpaper {
     return Wallpaper(
-        id = id ?: -1,
+        id = 0, // Not from DB, so no ID yet
         name = name ?: "",
-        category = category ?: emptyList(),
+        category = getConsolidatedCategories(),
         author = author ?: "",
         url = url ?: "",
-        thumbnail = thumbnail ?: "",
-        isPremium = isPremium ?: true,
-        tags = tags ?: emptyList(),
-        downloadable = downloadable ?: true
+        thumbnail = thumbnail,
+        size = size ?: 0,
+        dimensions = dimension,
+        downloadable = downloadable ?: true,
+        copyright = copyright ?: ""
     )
 }
 
 fun WallpaperDto.toWallpaperEntity(): WallpaperEntity {
     return WallpaperEntity(
-        id = id ?: -1,
+        // Let Room auto-generate the ID by using the default value (0)
         name = name ?: "",
-        category = category ?: emptyList(),
+        category = getConsolidatedCategories(),
         author = author ?: "",
         url = url ?: "",
-        thumbnail = thumbnail ?: "",
-        isPremium = isPremium ?: true,
-        tags = tags ?: emptyList(),
-        downloadable = downloadable ?: true
+        thumbnail = thumbnail,
+        size = size,
+        dimensions = dimension,
+        downloadable = downloadable ?: true,
+        copyright = copyright
     )
 }
 
 
 fun Wallpaper.toWallpaperEntity() : WallpaperEntity {
     return WallpaperEntity(
-        id = id,
+        id = if (id > 0) id else 0, // Let Room generate ID if it's a new item
         name = name,
         category = category,
         author = author,
         url = url,
         thumbnail = thumbnail,
-        isPremium = isPremium,
-        tags = tags,
-        downloadable = downloadable
+        size = size,
+        dimensions = dimensions,
+        downloadable = downloadable,
+        copyright = copyright
     )
 }
 
@@ -55,22 +65,23 @@ fun WallpaperEntity.toWallpaper(): Wallpaper {
         author = author,
         url = url,
         thumbnail = thumbnail,
-        isPremium = isPremium,
-        tags = tags,
-        downloadable = downloadable
+        size = size,
+        dimensions = dimensions,
+        downloadable = downloadable,
+        copyright = copyright
     )
 }
 
 fun WallpaperEntity.toWallpaperDto(): WallpaperDto {
     return WallpaperDto(
-        id = id,
         name = name,
-        category = category,
+        categoryList = category,
         author = author,
         url = url,
         thumbnail = thumbnail,
-        isPremium = isPremium,
-        tags = tags,
-        downloadable = downloadable
+        size = size,
+        dimension = dimensions,
+        downloadable = downloadable,
+        copyright = copyright
     )
 }

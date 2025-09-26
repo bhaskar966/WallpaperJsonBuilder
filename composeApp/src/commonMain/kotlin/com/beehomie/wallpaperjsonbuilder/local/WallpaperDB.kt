@@ -1,7 +1,6 @@
 package com.beehomie.wallpaperjsonbuilder.local
 
 import androidx.room.*
-import com.beehomie.wallpaperjsonbuilder.local.entities.BannerEntity
 import com.beehomie.wallpaperjsonbuilder.local.entities.WallpaperEntity
 import com.beehomie.wallpaperjsonbuilder.local.typeConverters.IntListConverter
 import com.beehomie.wallpaperjsonbuilder.local.typeConverters.StringListConverter
@@ -10,7 +9,6 @@ import com.beehomie.wallpaperjsonbuilder.local.typeConverters.StringListConverte
 @Database(
     entities = [
         WallpaperEntity::class,
-        BannerEntity::class
     ],
     version = 2,
     exportSchema = true

@@ -25,9 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
 import com.beehomie.wallpaperjsonbuilder.presentation.FilePickers.FilePickerSection
-import com.beehomie.wallpaperjsonbuilder.presentation.forms.BannerInputForm
 import com.beehomie.wallpaperjsonbuilder.presentation.forms.WallpaperInputForm
-import com.beehomie.wallpaperjsonbuilder.presentation.lists.BannerListUi
 import com.beehomie.wallpaperjsonbuilder.presentation.lists.WallpaperListUi
 import com.beehomie.wallpaperjsonbuilder.presentation.menu.MenuItem
 import com.beehomie.wallpaperjsonbuilder.presentation.menu.MenuItemNames
@@ -70,9 +68,8 @@ fun MainScreen(
 //        viewModel.loadData()
     }
 
-    LaunchedEffect(wallpapers.size, wallpaperUiState.banners.size) {
+    LaunchedEffect(wallpapers.size) {
         print("mainScreen: Wallpaper size = ${wallpapers.size}")
-        print("mainScreen: banner size = ${wallpaperUiState.banners.size}")
     }
 
     var wallpaperNameTextField = remember { mutableStateOf("") }
@@ -144,33 +141,6 @@ fun MainScreen(
                             wallpaperUiState = wallpaperUiState
                         )
                         WallpaperListUi(
-                            wallpaperUiState = wallpaperUiState,
-                            windowState = windowState,
-                            onWallpaperClick = viewModel::onEvent
-                        )
-                    }
-
-                }
-                MenuItemNames.BANNERS -> {
-
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Button(
-                            onClick = {
-                                isBannerInsertDialogVisible.value = true
-                            }
-                        ){
-                            Text("Insert New Banner")
-                        }
-
-                        BannerInputForm(
-                            isFormVisible = isBannerInsertDialogVisible,
-                            onInsertButtonClick = viewModel::onEvent
-                        )
-
-                        BannerListUi(
                             wallpaperUiState = wallpaperUiState,
                             windowState = windowState,
                             onWallpaperClick = viewModel::onEvent

@@ -46,7 +46,7 @@ fun WallpaperListUi(
         modifier = Modifier
     ){
         if(wallpapers.isEmpty()){
-            Text("Hello Mars")
+            Text("No Wallpapers added yet")
             return
         }
 

@@ -1,11 +1,6 @@
 package com.beehomie.wallpaperjsonbuilder.viewModels
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.beehomie.wallpaperjsonbuilder.domain.models.Banner
 import com.beehomie.wallpaperjsonbuilder.domain.models.Wallpaper
-import com.beehomie.wallpaperjsonbuilder.mappers.toBannerEntity
 import com.beehomie.wallpaperjsonbuilder.mappers.toWallpaperEntity
 import com.beehomie.wallpaperjsonbuilder.remote.repository.WallpaperRepository
 import com.beehomie.wallpaperjsonbuilder.viewModels.components.WallpaperUiEvents
@@ -33,11 +28,6 @@ class MainViewModel(
 
     fun onEvent(event: WallpaperUiEvents) {
         when (event) {
-            is WallpaperUiEvents.DeleteBanner -> {
-                scope.launch {
-                    deleteBanner(event.id)
-                }
-            }
 
             is WallpaperUiEvents.DeleteWallpaper -> {
                 scope.launch {
@@ -45,21 +35,9 @@ class MainViewModel(
                 }
             }
 
-            is WallpaperUiEvents.UpdateBanner -> {
-                scope.launch {
-                    updateBanner(event.id)
-                }
-            }
-
             is WallpaperUiEvents.UpdateWallpaper -> {
                 scope.launch {
                     updateWallpaper(event.id)
-                }
-            }
-
-            is WallpaperUiEvents.UpsertBanner -> {
-                scope.launch {
-                    upsertBanner(event.banner)
                 }
             }
 
@@ -100,7 +78,6 @@ class MainViewModel(
             }
             print("viewmodel: loaded data from api\n")
             getAllWallpapers()
-            getAllBanners()
             getCategoryAndTagsSuggestion()
             if(wallpaperUiState.value.isDbEmpty){
                 _wallpaperUiState.update {
@@ -121,7 +98,6 @@ class MainViewModel(
     suspend fun checkForData(){
         withContext(Dispatchers.IO){
             getAllWallpapers()
-            getAllBanners()
             getCategoryAndTagsSuggestion()
             if(wallpaperUiState.value.isDbEmpty){
                 _wallpaperUiState.update {
@@ -152,22 +128,6 @@ class MainViewModel(
         print("viewmodel: is wallpapersList empty= ${wallpaperUiState.value.wallpapers.isEmpty()}\n")
     }
 
-    suspend fun getAllBanners(){
-        repository.getAllBanners().collectLatest { banners ->
-            if(banners.isEmpty()){
-                print("repository returned empty banner list/n")
-            }
-            _wallpaperUiState.update {
-                it.copy(
-                    banners = banners,
-                    isDbEmpty = banners.isEmpty()
-                )
-            }
-        }
-
-        print("viewmodel: saved banner in state\n")
-        print("viewmodel: is banner empty= ${wallpaperUiState.value.wallpapers.isEmpty()}\n")
-    }
 
     private suspend fun upsertWallpaper(wallpaper: Wallpaper) {
         withContext(Dispatchers.IO) {
@@ -190,24 +150,6 @@ class MainViewModel(
         }
     }
 
-    private suspend fun upsertBanner(banner: Banner) {
-        withContext(Dispatchers.IO) {
-            repository.upsertBanner(banner.toBannerEntity())
-        }
-    }
-
-    private suspend fun updateBanner(id: Int) {
-        withContext(Dispatchers.IO) {
-            repository.updateBanner(id)
-        }
-    }
-
-    private suspend fun deleteBanner(id: Int) {
-        withContext(Dispatchers.IO) {
-            repository.deleteBanner(id)
-        }
-    }
-
     suspend fun exportFile(path: String){
         withContext(Dispatchers.IO){
             repository.writeLocalFile(path)
@@ -221,11 +163,9 @@ class MainViewModel(
     private suspend fun getCategoryAndTagsSuggestion(){
         withContext(Dispatchers.IO){
             val categories = repository.getAllCategories()
-            val tags = repository.getAllTags()
             _wallpaperUiState.update {
                 it.copy(
                     existingCategoryList = categories,
-                    existingTagList = tags
                 )
             }
         }
@@ -238,7 +178,6 @@ class MainViewModel(
             _wallpaperUiState.update {
                 it.copy(
                     wallpapers = emptyList(),
-                    banners = emptyList(),
                     isDbEmpty = true,
                     needsData = true
                 )

@@ -31,13 +31,14 @@ import com.beehomie.wallpaperjsonbuilder.viewModels.components.WallpaperUiState
 
 fun resetForm(form: WallpaperFormState) {
     form.name = ""
-    form.author = "Bhaskar"
+    form.author = null
     form.url = ""
-    form.thumbnail = ""
-    form.category = ""
-    form.tags = ""
-    form.isPremium = false
+    form.thumbnail = null
+    form.category = null
     form.downloadable = true
+    form.dimensions = null
+    form.size = null
+    form.copyright = null
 }
 
 
@@ -50,7 +51,6 @@ fun WallpaperInputForm(
 
     val form = remember { WallpaperFormState() }
     val categories = wallpaperUiState.existingCategoryList
-    val tags = wallpaperUiState.existingTagList
     val categoryTextField = remember { mutableStateListOf<String>() }
     val tagTextField = remember { mutableStateListOf<String>() }
 
@@ -75,18 +75,18 @@ fun WallpaperInputForm(
                         onClick = {
 
                             form.category = categoryTextField.joinToString(",")
-                            form.tags = tagTextField.joinToString(",")
 
                             val newWall = Wallpaper(
                                 id = 0,
                                 name = form.name,
-                                author = form.author,
+                                author = if(form.author.isNullOrBlank()) null else form.author,
                                 url = form.url,
-                                thumbnail = form.thumbnail,
-                                isPremium = form.isPremium,
+                                thumbnail = if(form.thumbnail.isNullOrBlank()) null else form.thumbnail,
+                                copyright = if(form.copyright.isNullOrBlank()) null else form.copyright,
                                 downloadable = form.downloadable,
-                                category = form.category.split(',').map { it.trim() }.filter { it.isNotEmpty() },
-                                tags = form.tags.split(',').map { it.trim() }.filter { it.isNotEmpty() }
+                                category = form.category?.split(',')?.map { it.trim() }?.filter { it.isNotEmpty() }?.filter { it.isNotBlank() },
+                                size = if(form.size == 0) null else form.size,
+                                dimensions = if(form.dimensions.isNullOrBlank()) null else form.dimensions
                             )
                             onInsertButtonClick(
                                 WallpaperUiEvents.UpsertWallpaper(
@@ -135,7 +135,7 @@ fun WallpaperInputForm(
                         label = { Text("Name") }
                     )
                     TextField(
-                        value = form.author,
+                        value = form.author ?: "",
                         onValueChange = { form.author = it },
                         label = { Text("Author") }
                     )
@@ -145,25 +145,30 @@ fun WallpaperInputForm(
                         label = { Text("Image URL") }
                     )
                     TextField(
-                        value = form.thumbnail,
+                        value = form.thumbnail ?: "",
                         onValueChange = { form.thumbnail = it },
                         label = { Text("Thumbnail URL") }
+                    )
+                    TextField(
+                        value = if(form.size == null) "" else form.size.toString(),
+                        onValueChange = { form.size = it.toInt() },
+                        label = { Text("Size") }
+                    )
+                    TextField(
+                        value = form.dimensions ?: "",
+                        onValueChange = { form.dimensions = it },
+                        label = { Text("dimensions") }
+                    )
+                    TextField(
+                        value = form.copyright ?: "",
+                        onValueChange = { form.copyright = it },
+                        label = { Text("copyright") }
                     )
                     ChipInputField(
                         label = "Categories",
                         suggestions = categories,
                         selectedItems = categoryTextField
                     )
-                    ChipInputField(
-                        label = "Tags",
-                        suggestions = tags,
-                        selectedItems = tagTextField,
-                    )
-
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Checkbox(checked = form.isPremium, onCheckedChange = { form.isPremium = it })
-                        Text("Premium")
-                    }
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Checkbox(checked = form.downloadable, onCheckedChange = { form.downloadable = it })
