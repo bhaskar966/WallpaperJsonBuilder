@@ -111,6 +111,7 @@ compose.desktop {
             }
             windows {
                 iconFile.set(project.file("resources/jsonbuilder_icon.ico"))
+                shortcut = true
             }
         }
     }
