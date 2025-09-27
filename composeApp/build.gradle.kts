@@ -100,7 +100,7 @@ compose.desktop {
 
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Dmg, TargetFormat.Exe, TargetFormat.Deb)
             packageName = "com-beehomie-wallpaperjsonbuilder"
             packageVersion = "1.0.0"
             linux {
