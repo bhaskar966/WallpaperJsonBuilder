@@ -101,7 +101,7 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Exe, TargetFormat.Deb)
-            packageName = "com-beehomie-wallpaperjsonbuilder"
+            packageName = "Json Builder - Frames"
             packageVersion = "1.0.0"
             linux {
                 iconFile.set(project.file("resources/jsonbuilder_Icon.png"))

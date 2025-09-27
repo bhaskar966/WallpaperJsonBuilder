@@ -18,7 +18,7 @@ fun main() {
         modules(desktopDatabaseModule, sharedModule, apiModule, dispatcherModule)
     }
 
-    FileKit.init(appId = "WallpaperJSONBuilder")
+    FileKit.init(appId = "Wallpaper JSON Builder")
 
     application {
         val viewmodel = koinInject<MainViewModel>()
@@ -27,7 +27,7 @@ fun main() {
                 viewmodel::clearScope.invoke()
                 ::exitApplication.invoke()
             },
-            title = "WallpaperJSONBuilder",
+            title = "Wallpaper JSON Builder",
         ) {
             App()
         }
